@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, CSSProperties } from "react";
 import ReactFlow, {
   Background,
   Controls,
@@ -520,15 +520,362 @@ const fullNodeDetails: Record<string, React.ReactNode> = {
   ),
 };
 
+// Helper to generate mini-diagrams for each node
+const getMiniDiagram = (nodeId: string) => {
+  switch (nodeId) {
+    case "1":
+      return {
+        nodes: [
+          {
+            id: "1",
+            data: { label: "User Initiation" },
+            position: { x: 0, y: 0 },
+            style: nodeStyle,
+          },
+        ],
+        edges: [],
+      };
+    case "2":
+      return {
+        nodes: [
+          {
+            id: "2",
+            data: { label: "Payment Prompt" },
+            position: { x: 0, y: 0 },
+            style: nodeStyle,
+          },
+          {
+            id: "2a",
+            data: { label: "Annual Option" },
+            position: { x: -120, y: 100 },
+            style: nodeStyle,
+          },
+          {
+            id: "2b",
+            data: { label: "Monthly Option" },
+            position: { x: 120, y: 100 },
+            style: nodeStyle,
+          },
+        ],
+        edges: [
+          {
+            id: "e2-2a",
+            source: "2",
+            target: "2a",
+            label: "Annual",
+            animated: true,
+          },
+          {
+            id: "e2-2b",
+            source: "2",
+            target: "2b",
+            label: "Monthly",
+            animated: true,
+          },
+        ],
+      };
+    case "3":
+      return {
+        nodes: [
+          {
+            id: "3",
+            data: { label: "Payment Processing" },
+            position: { x: 0, y: 0 },
+            style: nodeStyle,
+          },
+          {
+            id: "3a",
+            data: { label: "Paystack Gateway" },
+            position: { x: 0, y: 100 },
+            style: stackNodeStyle,
+          },
+        ],
+        edges: [{ id: "e3-3a", source: "3", target: "3a", animated: true }],
+      };
+    case "4":
+      return {
+        nodes: [
+          {
+            id: "4",
+            data: { label: "Payment Confirmation" },
+            position: { x: 0, y: 0 },
+            style: nodeStyle,
+          },
+          {
+            id: "4a",
+            data: { label: "Update Status" },
+            position: { x: 0, y: 100 },
+            style: nodeStyle,
+          },
+        ],
+        edges: [{ id: "e4-4a", source: "4", target: "4a", animated: true }],
+      };
+    case "5a":
+      return {
+        nodes: [
+          {
+            id: "5a",
+            data: { label: "Annual Payment" },
+            position: { x: 0, y: 0 },
+            style: nodeStyle,
+          },
+          {
+            id: "5a1",
+            data: { label: "12 Months Access" },
+            position: { x: 0, y: 100 },
+            style: nodeStyle,
+          },
+        ],
+        edges: [{ id: "e5a-5a1", source: "5a", target: "5a1", animated: true }],
+      };
+    case "5b":
+      return {
+        nodes: [
+          {
+            id: "5b",
+            data: { label: "Monthly Payment" },
+            position: { x: 0, y: 0 },
+            style: nodeStyle,
+          },
+          {
+            id: "5b1",
+            data: { label: "1 Month Access" },
+            position: { x: 0, y: 100 },
+            style: nodeStyle,
+          },
+        ],
+        edges: [{ id: "e5b-5b1", source: "5b", target: "5b1", animated: true }],
+      };
+    case "6a":
+      return {
+        nodes: [
+          {
+            id: "6a",
+            data: { label: "Vehicle Registration Verification" },
+            position: { x: 0, y: 0 },
+            style: nodeStyle,
+          },
+          {
+            id: "6a1",
+            data: { label: "Input Reg. Number" },
+            position: { x: 0, y: 100 },
+            style: nodeStyle,
+          },
+          {
+            id: "6a2",
+            data: { label: "Verify & Return Result" },
+            position: { x: 0, y: 200 },
+            style: nodeStyle,
+          },
+        ],
+        edges: [
+          { id: "e6a-6a1", source: "6a", target: "6a1", animated: true },
+          { id: "e6a1-6a2", source: "6a1", target: "6a2", animated: true },
+        ],
+      };
+    case "6b":
+      return {
+        nodes: [
+          {
+            id: "6b",
+            data: { label: "Monthly Verification" },
+            position: { x: 0, y: 0 },
+            style: nodeStyle,
+          },
+          {
+            id: "6b1",
+            data: { label: "Check Payment Status" },
+            position: { x: 0, y: 100 },
+            style: nodeStyle,
+          },
+          {
+            id: "6b2",
+            data: { label: "Allow/Deny Access" },
+            position: { x: 0, y: 200 },
+            style: nodeStyle,
+          },
+        ],
+        edges: [
+          { id: "e6b-6b1", source: "6b", target: "6b1", animated: true },
+          { id: "e6b1-6b2", source: "6b1", target: "6b2", animated: true },
+        ],
+      };
+    case "7a":
+      return {
+        nodes: [
+          {
+            id: "7a",
+            data: { label: "Verification Result" },
+            position: { x: 0, y: 0 },
+            style: nodeStyle,
+          },
+          {
+            id: "7a1",
+            data: { label: "Show Details" },
+            position: { x: 0, y: 100 },
+            style: nodeStyle,
+          },
+        ],
+        edges: [{ id: "e7a-7a1", source: "7a", target: "7a1", animated: true }],
+      };
+    case "7b":
+      return {
+        nodes: [
+          {
+            id: "7b",
+            data: { label: "Payment Tracking" },
+            position: { x: 0, y: 0 },
+            style: nodeStyle,
+          },
+          {
+            id: "7b1",
+            data: { label: "Send Reminders" },
+            position: { x: -100, y: 100 },
+            style: nodeStyle,
+          },
+          {
+            id: "7b2",
+            data: { label: "Suspend Access" },
+            position: { x: 100, y: 100 },
+            style: nodeStyle,
+          },
+        ],
+        edges: [
+          { id: "e7b-7b1", source: "7b", target: "7b1", animated: true },
+          { id: "e7b-7b2", source: "7b", target: "7b2", animated: true },
+        ],
+      };
+    case "stack":
+      return {
+        nodes: [
+          {
+            id: "stack",
+            data: { label: "Tech Stack" },
+            position: { x: 0, y: 0 },
+            style: stackNodeStyle,
+          },
+          {
+            id: "stack1",
+            data: { label: "React" },
+            position: { x: -120, y: 100 },
+            style: stackNodeStyle,
+          },
+          {
+            id: "stack2",
+            data: { label: "NodeJS" },
+            position: { x: -60, y: 200 },
+            style: stackNodeStyle,
+          },
+          {
+            id: "stack3",
+            data: { label: "Firebase" },
+            position: { x: 0, y: 200 },
+            style: stackNodeStyle,
+          },
+          {
+            id: "stack4",
+            data: { label: "MongoDB" },
+            position: { x: 60, y: 200 },
+            style: stackNodeStyle,
+          },
+          {
+            id: "stack5",
+            data: { label: "Cloudinary" },
+            position: { x: 120, y: 100 },
+            style: stackNodeStyle,
+          },
+          {
+            id: "stack6",
+            data: { label: "Paystack" },
+            position: { x: 0, y: 300 },
+            style: stackNodeStyle,
+          },
+        ],
+        edges: [
+          {
+            id: "estack-stack1",
+            source: "stack",
+            target: "stack1",
+            animated: true,
+          },
+          {
+            id: "estack-stack2",
+            source: "stack1",
+            target: "stack2",
+            animated: true,
+          },
+          {
+            id: "estack-stack3",
+            source: "stack1",
+            target: "stack3",
+            animated: true,
+          },
+          {
+            id: "estack-stack4",
+            source: "stack1",
+            target: "stack4",
+            animated: true,
+          },
+          {
+            id: "estack-stack5",
+            source: "stack",
+            target: "stack5",
+            animated: true,
+          },
+          {
+            id: "estack-stack6",
+            source: "stack",
+            target: "stack6",
+            animated: true,
+          },
+        ],
+      };
+    default:
+      return { nodes: [], edges: [] };
+  }
+};
+
+const modalBackdrop: CSSProperties = {
+  position: "fixed",
+  top: 0,
+  left: 0,
+  width: "100vw",
+  height: "100vh",
+  background: "rgba(30,41,59,0.32)",
+  zIndex: 2000,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+};
+const modalBox: CSSProperties = {
+  background: "white",
+  borderRadius: 18,
+  boxShadow: "0 12px 48px rgba(0,0,0,0.22)",
+  padding: 36,
+  minWidth: 420,
+  minHeight: 320,
+  maxWidth: "90vw",
+  maxHeight: "80vh",
+  position: "relative",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+};
+
 const WorkflowDiagram: React.FC = () => {
   const [selected, setSelected] = useState<string | null>(null);
   const [showFull, setShowFull] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const onNodeClick = (_: any, node: Node) => {
     setSelected(node.id);
     setShowFull(false);
+    setShowModal(false);
   };
   const closePanel = () => setSelected(null);
   const handleFullDetails = () => setShowFull(true);
+  const handleShowDiagram = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
+  const mini = selected ? getMiniDiagram(selected) : { nodes: [], edges: [] };
   return (
     <div
       style={{
@@ -584,12 +931,31 @@ const WorkflowDiagram: React.FC = () => {
           <div style={{ marginTop: 8, fontSize: 17, color: "#222" }}>
             {showFull ? fullNodeDetails[selected] : nodeDetails[selected]}
           </div>
-          {!showFull && (
+          <div style={{ display: "flex", gap: 12, marginTop: 24 }}>
+            {!showFull && (
+              <button
+                onClick={handleFullDetails}
+                style={{
+                  background:
+                    "linear-gradient(90deg, #6366f1 0%, #f59e42 100%)",
+                  color: "white",
+                  border: "none",
+                  borderRadius: 8,
+                  padding: "10px 22px",
+                  fontWeight: 700,
+                  fontSize: 16,
+                  cursor: "pointer",
+                  boxShadow: "0 2px 8px rgba(99,102,241,0.12)",
+                  transition: "background 0.2s",
+                }}
+              >
+                Full Details
+              </button>
+            )}
             <button
-              onClick={handleFullDetails}
+              onClick={handleShowDiagram}
               style={{
-                marginTop: 24,
-                background: "linear-gradient(90deg, #6366f1 0%, #f59e42 100%)",
+                background: "linear-gradient(90deg, #f59e42 0%, #6366f1 100%)",
                 color: "white",
                 border: "none",
                 borderRadius: 8,
@@ -597,13 +963,71 @@ const WorkflowDiagram: React.FC = () => {
                 fontWeight: 700,
                 fontSize: 16,
                 cursor: "pointer",
-                boxShadow: "0 2px 8px rgba(99,102,241,0.12)",
+                boxShadow: "0 2px 8px rgba(245,158,66,0.12)",
                 transition: "background 0.2s",
               }}
             >
-              Full Details
+              Show Diagram
             </button>
-          )}
+          </div>
+        </div>
+      )}
+      {showModal && (
+        <div style={modalBackdrop}>
+          <div style={modalBox}>
+            <button
+              onClick={handleCloseModal}
+              style={{
+                position: "absolute",
+                top: 18,
+                right: 24,
+                background: "none",
+                border: "none",
+                fontSize: 28,
+                color: "#f59e42",
+                cursor: "pointer",
+                fontWeight: 700,
+              }}
+            >
+              ×
+            </button>
+            <div
+              style={{
+                fontWeight: 700,
+                fontSize: 20,
+                marginBottom: 18,
+                color: "#6366f1",
+              }}
+            >
+              Workflow Diagram
+            </div>
+            <div
+              style={{
+                width: 340,
+                height: 320,
+                background: "#f0fdfa",
+                borderRadius: 12,
+                overflow: "hidden",
+                boxShadow: "0 2px 12px rgba(99,102,241,0.08)",
+              }}
+            >
+              <ReactFlow
+                nodes={mini.nodes}
+                edges={mini.edges}
+                fitView
+                panOnDrag={false}
+                zoomOnScroll={false}
+                zoomOnPinch={false}
+                zoomOnDoubleClick={false}
+                nodesDraggable={false}
+                nodesConnectable={false}
+                elementsSelectable={false}
+                style={{ width: "100%", height: "100%" }}
+              >
+                <Background color="#a5b4fc" gap={24} />
+              </ReactFlow>
+            </div>
+          </div>
         </div>
       )}
       <style>{`
